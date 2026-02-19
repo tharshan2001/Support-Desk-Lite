@@ -49,7 +49,7 @@ export const updateTicketStatus = async (req, res) => {
     }
 
     const { status } = value;
-    const ticketId = req.params.id;
+    const ticketId = req.body.id;
 
     const ticket = await Ticket.findById(ticketId);
     if (!ticket) {

@@ -3,7 +3,6 @@ import { ticketCreateSchema } from "../validation/ticketCreate.js";
 import { isValidStatusTransition } from "../utils/validateStatusTransition.js";
 import { ticketStatusUpdateSchema } from "../validation/ticketStatusUpdate.js";
 
-
 //create ticket
 export const createTicket = async (req, res) => {
   const { error, value } = ticketCreateSchema.validate(req.body);
@@ -36,9 +35,6 @@ export const createTicket = async (req, res) => {
   }
 };
 
-
-
-
 //update status
 export const updateTicketStatus = async (req, res) => {
   try {
@@ -68,5 +64,99 @@ export const updateTicketStatus = async (req, res) => {
     res.status(200).json(ticket);
   } catch {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getAllTickets = async (req, res) => {
+  try {
+    const { status, priority, tag, search, page = 1, limit = 10 } = req.query;
+
+    const query = {};
+
+    if (status) query.status = status;
+    if (priority) query.priority = priority;
+    if (tag) query.tags = tag;
+
+    if (search) {
+      query.$text = { $search: search };
+    }
+
+    const pageNumber = Math.max(Number(page), 1);
+    const pageLimit = Math.min(Number(limit), 50);
+    const skip = (pageNumber - 1) * pageLimit;
+
+    const tickets = await Ticket.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(pageLimit)
+      .populate("createdBy", "name email role")
+      .populate("assignedTo", "name email role");
+
+    const total = await Ticket.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        tickets,
+        page: pageNumber,
+        limit: pageLimit,
+        total,
+        pages: Math.ceil(total / pageLimit),
+      },
+      error: null,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      data: null,
+      error: "Server error",
+    });
+  }
+};
+
+export const getMyTickets = async (req, res) => {
+  try {
+    const { status, priority, tag, search, page = 1, limit = 10 } = req.query;
+
+    const query = {
+      createdBy: req.user.id,
+    };
+
+    if (status) query.status = status;
+    if (priority) query.priority = priority;
+    if (tag) query.tags = tag;
+
+    if (search) {
+      query.$text = { $search: search };
+    }
+
+    const pageNumber = Math.max(Number(page), 1);
+    const pageLimit = Math.min(Number(limit), 50);
+    const skip = (pageNumber - 1) * pageLimit;
+
+    const tickets = await Ticket.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(pageLimit);
+
+    const total = await Ticket.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        tickets,
+        page: pageNumber,
+        limit: pageLimit,
+        total,
+        pages: Math.ceil(total / pageLimit),
+      },
+      error: null,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      data: null,
+      error: "Server error",
+    });
   }
 };

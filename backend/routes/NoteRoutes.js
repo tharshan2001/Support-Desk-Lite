@@ -9,4 +9,6 @@ const router = express.Router();
 router.post("/", protect, authorizeRoles("admin", "agent"), addInternalNote);
 router.get("/", protect, authorizeRoles("admin", "agent"), getInternalNotes);
 
+
+
 export default router;

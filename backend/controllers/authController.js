@@ -11,7 +11,7 @@ export const register = async (req, res) => {
   if (error) {
     return res.status(400).json({
       message: "Validation error: ",
-      details: error.details,
+      details: error.details
     });
   }
 
@@ -63,7 +63,7 @@ export const login = async (req, res) => {
     }
 
     // Generate JWT
-    const token = generateToken({ id: user._id, email: user.email });
+    const token = generateToken({ id: user._id, email: user.email,  role: user.role });
 
     // Set token in HTTP-only cookie
     res.cookie("SDL_token", token, {
@@ -89,4 +89,15 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie("SDL_token");
   res.status(200).json({ message: "Logged out successfully!" });
+};
+
+//auth me
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 };

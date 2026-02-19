@@ -1,0 +1,8 @@
+import Joi from "joi";
+
+export const ticketCreateSchema = Joi.object({
+  title: Joi.string().min(5).max(200).required(),
+  description: Joi.string().min(10).max(5000).required(),
+  priority: Joi.string().valid("low", "medium", "high").required(),
+  tags: Joi.array().items(Joi.string()).optional(),
+});

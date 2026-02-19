@@ -1,9 +1,8 @@
-import { Routes, Route } from "react-router-dom";
-import PrivateRoute from "./routes/PrivateRoute";
-import LoginPage from "./pages/LoginPage";
-import Unauthorized from "./pages/Unauthorized";
-import CustomerDashboard from "./components/CustomerDashboard";
-import Sidebar from "./components/Sidebar";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import CustomerLayout from "./layout/CustomerLayout";
+import AdminLayout from "./layout/AdminLayout";
+import LoginPage from "./pages/LoginPage"
 import "./index.css";
 
 function App() {
@@ -11,32 +10,46 @@ function App() {
     <Routes>
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/unauthorized" element={<div>Unauthorized Page</div>} />
 
-      {/* Customer routes */}
-      <Route element={<PrivateRoute allowedRoles={["customer"]} />}>
-        <Route
-          path="/customer"
-          element={
-            <div className="flex min-h-screen">
-              <Sidebar />
-              <main className="flex-1 p-4 bg-gray-50">
-                <CustomerDashboard />
-              </main>
-            </div>
-          }
-        />
-      </Route>
+      {/* Admin / Agent Dashboard */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["admin", "agent"]}>
+            <AdminLayout>
+              <div>Admin / Agent Dashboard Content</div>
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Agent routes */}
-      <Route element={<PrivateRoute allowedRoles={["agent"]} />}>
-        {/* Add agent routes here */}
-      </Route>
+      {/* Customer Dashboard */}
+      <Route
+        path="/customer"
+        element={
+          <ProtectedRoute allowedRoles={["customer"]}>
+            <CustomerLayout>
+              <div>Customer Dashboard Content</div>
+            </CustomerLayout>
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Admin routes */}
-      <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-        {/* Add admin routes here */}
-      </Route>
+      {/* Tickets */}
+      <Route
+        path="/tickets/new"
+        element={
+          <ProtectedRoute allowedRoles={["customer", "admin", "agent"]}>
+            <CustomerLayout>
+              <div>Shared Ticket Page</div>
+            </CustomerLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Default fallback */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

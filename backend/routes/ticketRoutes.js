@@ -10,7 +10,7 @@ import { authorizeRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, createTicket);
+router.post("/", protect, authorizeRoles("customer"), createTicket);
 
 router.patch(
   "/status",

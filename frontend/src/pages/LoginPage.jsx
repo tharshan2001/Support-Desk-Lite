@@ -21,6 +21,7 @@ const LoginPage = () => {
 
     if (success) {
       toast.success("Welcome back!");
+      // No need to navigate here; useEffect handles role-based redirect
     } else {
       toast.error(error || "Login failed");
     }
@@ -29,9 +30,12 @@ const LoginPage = () => {
   useEffect(() => {
     if (!user) return;
 
-    if (user.role === "admin") navigate("/admin");
-    else if (user.role === "agent") navigate("/agent");
-    else navigate("/customer");
+    // Fixed role-based redirect to match your App.jsx routes
+    if (["admin", "agent"].includes(user.role)) {
+      navigate("/dashboard");
+    } else if (user.role === "customer") {
+      navigate("/customer");
+    }
   }, [user, navigate]);
 
   return (

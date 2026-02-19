@@ -5,12 +5,10 @@ import cookieParser from "cookie-parser";
 import connectionDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
-
+import ticketRoutes from "./routes/ticketRoutes.js";
 
 
 dotenv.config();
-
-console.log("JWT_SECRET:", process.env.JWT_SECRET); // debug
 
 
 const app = express();
@@ -26,6 +24,8 @@ connectionDB();
 app.get("/", (req, res) => res.send("API is running..."));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/tickets", ticketRoutes);
+
 
 
 app.listen(PORT, () => {

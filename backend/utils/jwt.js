@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config(); // ensure env vars are loaded
+dotenv.config(); 
 
 import jwt from "jsonwebtoken";
 
@@ -13,7 +13,9 @@ export const generateToken = (payload) => {
 export const verifyToken = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch {
+  } catch (err) {
+    console.error("JWT verify failed:", err.message);
     return null;
   }
 };
+

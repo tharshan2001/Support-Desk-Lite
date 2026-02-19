@@ -6,13 +6,16 @@ import { ticketStatusUpdateSchema } from "../validation/ticketStatusUpdate.js";
 
 //create ticket
 export const createTicket = async (req, res) => {
-  // Validate user input
   const { error, value } = ticketCreateSchema.validate(req.body);
   if (error) {
     return res.status(400).json({
       message: "Validation error",
       details: error.details,
     });
+  }
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
@@ -27,10 +30,12 @@ export const createTicket = async (req, res) => {
     });
 
     res.status(201).json(ticket);
-  } catch {
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 

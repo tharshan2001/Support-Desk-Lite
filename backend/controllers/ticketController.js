@@ -44,8 +44,13 @@ export const updateTicketStatus = async (req, res) => {
       return res.status(400).json({ errors: error.details });
     }
 
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const { status } = value;
     const ticketId = req.body.id;
+    const userId = req.user.id;
 
     const ticket = await Ticket.findById(ticketId);
     if (!ticket) {
@@ -67,6 +72,7 @@ export const updateTicketStatus = async (req, res) => {
   }
 };
 
+//get All
 export const getAllTickets = async (req, res) => {
   try {
     const { status, priority, tag, search, page = 1, limit = 10 } = req.query;

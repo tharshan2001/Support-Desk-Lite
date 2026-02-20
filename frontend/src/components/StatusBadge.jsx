@@ -1,44 +1,20 @@
+// components/StatusBadge.jsx
 import React from "react";
 
 const StatusBadge = ({ status }) => {
   const config = {
-    open: {
-      bg: "#dbeafe",
-      color: "#1d4ed8",
-      label: "Open",
-    },
-    in_progress: {
-      bg: "#fef3c7",
-      color: "#b45309",
-      label: "In Progress",
-    },
-    resolved: {
-      bg: "#d1fae5",
-      color: "#065f46",
-      label: "Resolved",
-    },
-    closed: {
-      bg: "#f3f4f6",
-      color: "#6b7280",
-      label: "Closed",
-    },
+    open: { bg: "bg-blue-100", color: "text-blue-700", label: "Open" },
+    in_progress: { bg: "bg-amber-100", color: "text-amber-700", label: "In Progress" },
+    resolved: { bg: "bg-green-100", color: "text-green-700", label: "Resolved" },
+    closed: { bg: "bg-gray-100", color: "text-gray-500", label: "Closed" },
   };
 
   const c = config[status] || config.open;
 
   return (
-    <span
-      className="badge"
-      style={{ background: c.bg, color: c.color }}
-    >
+    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold ${c.bg} ${c.color}`}>
       <span
-        style={{
-          width: 7,
-          height: 7,
-          borderRadius: "50%",
-          background: c.color,
-          display: "inline-block",
-        }}
+        className={`w-2 h-2 rounded-full ${c.color} inline-block`}
       />
       {c.label}
     </span>

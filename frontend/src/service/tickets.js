@@ -24,6 +24,19 @@ export const getTicketById = async (id) => {
   }
 };
 
+// Get ticket by ID 
+export const getAllTicketsAdmin = async (id) => {
+  try {
+    const res = await api.get("/tickets/admin", {
+      params: { ticketId: id },
+    });
+    return res.data.data; // ticket object
+  } catch (err) {
+    console.error(`Error in getTicketById(${id}):`, err.response || err);
+    throw err;
+  }
+};
+
 // Update ticket status (FIXED: matches backend route)
 export const updateTicketStatus = async (id, status) => {
   try {

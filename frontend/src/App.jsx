@@ -8,6 +8,7 @@ import "./index.css";
 import CreateTicketPage from "./components/CreateTicketPage";
 import MyTickets from "./components/MyTickets";
 import TicketDetailPage from "./pages/TicketDetailPage";
+import AdminTicketListPage from "./pages/AdminTicketListPage";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         element={
           <ProtectedRoute allowedRoles={["admin", "agent"]}>
             <AdminLayout>
-              <div>Admin / Agent Dashboard Content</div>
+              <AdminTicketListPage/>
             </AdminLayout>
           </ProtectedRoute>
         }

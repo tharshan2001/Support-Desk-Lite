@@ -48,15 +48,15 @@ export const addComment = async (req, res) => {
 
 // Get all comments for a ticket (all users)
 export const getComments = async (req, res) => {
-  const { ticketId } = req.body;
-
-  if (!mongoose.Types.ObjectId.isValid(ticketId)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid ticket ID" });
-  }
-
   try {
+    const { id: ticketId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(ticketId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid ticket ID" });
+    }
+
     const comments = await Comment.find({ ticket: ticketId })
       .populate("user", "name email role")
       .sort({ createdAt: 1 });

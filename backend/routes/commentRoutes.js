@@ -8,6 +8,6 @@ const router = express.Router();
 router.post("/", protect, addComment);
 
 // Get all comments for a ticket (all authenticated users)
-router.get("/", protect, getComments);
+router.get("/:id", protect, getComments);
 
 export default router;

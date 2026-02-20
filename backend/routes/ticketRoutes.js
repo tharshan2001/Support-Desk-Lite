@@ -4,6 +4,7 @@ import {
   updateTicketStatus,
   getAllTickets,
   getMyTickets,
+  getTicketById,
 } from "../controllers/ticketController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
@@ -20,6 +21,8 @@ router.patch(
 );
 
 router.get("/admin", protect, authorizeRoles("admin", "agent"), getAllTickets);
+
+router.get("/getTicket", protect, authorizeRoles("customer"), getTicketById);
 
 router.get("/my", protect, authorizeRoles("customer"), getMyTickets);
 

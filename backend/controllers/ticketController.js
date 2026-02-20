@@ -160,3 +160,31 @@ export const getMyTickets = async (req, res) => {
     });
   }
 };
+
+//get by Id
+export const getTicketById = async (req, res) => {
+  try {
+    const { ticketId } = req.query;
+
+    if (!ticketId) {
+      return res.status(400).json({ message: "ticketId is required" });
+    }
+
+    const ticket = await Ticket.findById(ticketId)
+      .populate("createdBy", "name email role")
+      .populate("assignedTo", "name email role");
+
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+
+    res.status(200).json({ success: true, data: ticket });
+  } catch (err) {
+    console.error("Error in getTicketById:", err);
+    res.status(500).json({
+      success: false,
+      data: null,
+      error: "Server error",
+    });
+  }
+};

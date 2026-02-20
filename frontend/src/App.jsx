@@ -1,9 +1,13 @@
+// src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CustomerLayout from "./layout/CustomerLayout";
 import AdminLayout from "./layout/AdminLayout";
-import LoginPage from "./pages/LoginPage"
+import LoginPage from "./pages/LoginPage";
 import "./index.css";
+import CreateTicketPage from "./components/CreateTicketPage";
+import MyTickets from "./components/MyTickets";
+import TicketDetailPage from "./pages/TicketDetailPage";
 
 function App() {
   return (
@@ -42,7 +46,30 @@ function App() {
         element={
           <ProtectedRoute allowedRoles={["customer", "admin", "agent"]}>
             <CustomerLayout>
-              <div>Shared Ticket Page</div>
+              <CreateTicketPage />
+            </CustomerLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/tickets"
+        element={
+          <ProtectedRoute allowedRoles={["customer", "admin", "agent"]}>
+            <CustomerLayout>
+              <MyTickets />
+            </CustomerLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Ticket Details using URL param */}
+      <Route
+        path="/tickets/details/:id"
+        element={
+          <ProtectedRoute allowedRoles={["customer"]}>
+            <CustomerLayout>
+              <TicketDetailPage />
             </CustomerLayout>
           </ProtectedRoute>
         }

@@ -25,14 +25,17 @@ export const getTicketById = async (id) => {
 };
 
 // Get ticket by ID 
-export const getAllTicketsAdmin = async (id) => {
+export const getAllTicketsAdmin = async () => {
   try {
+    // Requesting a high limit to fetch all tickets for client-side filtering, sorting, and stats.
     const res = await api.get("/tickets/admin", {
-      params: { ticketId: id },
+      params: { page: 1, limit: 1000 }, 
     });
-    return res.data.data; // ticket object
+    
+    // Returns the data object containing { tickets, page, limit, total, pages }
+    return res.data.data; 
   } catch (err) {
-    console.error(`Error in getTicketById(${id}):`, err.response || err);
+    console.error("Error in getAllTicketsAdmin:", err.response || err);
     throw err;
   }
 };

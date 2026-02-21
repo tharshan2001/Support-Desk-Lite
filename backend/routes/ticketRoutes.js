@@ -22,7 +22,7 @@ router.patch(
 
 router.get("/admin", protect, authorizeRoles("admin", "agent"), getAllTickets);
 
-router.get("/getTicket", protect, authorizeRoles("customer"), getTicketById);
+router.get("/getTicket", protect, authorizeRoles("customer","admin", "agent"), getTicketById);
 
 router.get("/my", protect, authorizeRoles("customer"), getMyTickets);
 

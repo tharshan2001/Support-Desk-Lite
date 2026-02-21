@@ -1,9 +1,9 @@
-// src/lib/axios.js
+// src/service/api.js
 import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:5090/api",
-  withCredentials: true, // 🔥 allows cookies
+  withCredentials: true, 
 });
 
 export default api;

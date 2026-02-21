@@ -9,6 +9,7 @@ import CreateTicketPage from "./components/CreateTicketPage";
 import MyTickets from "./components/MyTickets";
 import TicketDetailPage from "./pages/TicketDetailPage";
 import AdminTicketListPage from "./pages/AdminTicketListPage";
+import AdminTicketDetailPage from "./pages/AdminTicketDetailPage";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         element={
           <ProtectedRoute allowedRoles={["admin", "agent"]}>
             <AdminLayout>
-              <AdminTicketListPage/>
+              <AdminTicketListPage />
             </AdminLayout>
           </ProtectedRoute>
         }
@@ -45,7 +46,7 @@ function App() {
       <Route
         path="/tickets/new"
         element={
-          <ProtectedRoute allowedRoles={["customer", "admin", "agent"]}>
+          <ProtectedRoute allowedRoles={["customer"]}>
             <CustomerLayout>
               <CreateTicketPage />
             </CustomerLayout>
@@ -56,7 +57,7 @@ function App() {
       <Route
         path="/tickets"
         element={
-          <ProtectedRoute allowedRoles={["customer", "admin", "agent"]}>
+          <ProtectedRoute allowedRoles={["customer"]}>
             <CustomerLayout>
               <MyTickets />
             </CustomerLayout>
@@ -71,6 +72,18 @@ function App() {
           <ProtectedRoute allowedRoles={["customer"]}>
             <CustomerLayout>
               <TicketDetailPage />
+            </CustomerLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Ticket Details using URL param */}
+      <Route
+        path="/tickets/detailed/:id"
+        element={
+          <ProtectedRoute allowedRoles={["agent", "admin"]}>
+            <CustomerLayout>
+              <AdminTicketDetailPage />
             </CustomerLayout>
           </ProtectedRoute>
         }

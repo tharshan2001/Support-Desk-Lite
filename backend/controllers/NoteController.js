@@ -7,13 +7,11 @@ import mongoose from "mongoose";
 export const addInternalNote = async (req, res) => {
   const { error, value } = internalNoteSchema.validate(req.body);
   if (error)
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Validation error",
-        details: error.details,
-      });
+    return res.status(400).json({
+      success: false,
+      message: "Validation error",
+      details: error.details,
+    });
 
   const { ticketId, body } = value;
 
@@ -43,14 +41,17 @@ export const addInternalNote = async (req, res) => {
   }
 };
 
+
+
 // Get all internal notes for a ticket (admin/agent only)
 export const getInternalNotes = async (req, res) => {
-  const { ticketId } = req.body;
+  const { id: ticketId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(ticketId))
+  if (!mongoose.Types.ObjectId.isValid(ticketId)) {
     return res
       .status(400)
       .json({ success: false, message: "Invalid ticket ID" });
+  }
 
   try {
     const notes = await InternalNote.find({ ticket: ticketId })

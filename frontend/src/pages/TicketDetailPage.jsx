@@ -84,9 +84,7 @@ const TicketDetailPage = () => {
       <div className="shrink-0 p-6 bg-gradient-to-b from-white to-slate-50/30">
         <div className="flex justify-between items-start mb-4">
           <h1 className="text-2xl font-black text-slate-900 leading-tight tracking-tight">{ticket.title}</h1>
-          <div className={`px-3 py-1 rounded-lg border text-xs font-bold ${statusStyles[ticket.priority]}`}>
-            {ticket.priority.toUpperCase()} PRIORITY
-          </div>
+
         </div>
         
         <p className="text-slate-600 leading-relaxed text-[15px] mb-6 max-w-2xl">

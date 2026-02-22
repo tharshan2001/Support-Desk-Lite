@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getAllTicketsAdmin } from "../service/tickets";
 import TicketCard from "../components/TicketCard";
 import LoadingSpinner from "../components/LoadingSpinner";

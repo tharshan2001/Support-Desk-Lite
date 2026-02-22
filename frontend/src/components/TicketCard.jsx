@@ -16,10 +16,11 @@ const TicketCard = ({ ticket }) => {
   return (
     <Link
       to={`/tickets/detailed/${ticket._id}`}
-      className="group block bg-white rounded-xl border border-gray-200 hover:border-green-300 transition-all duration-150 shadow-sm hover:shadow"
+      className="group block rounded-xl border border-gray-200 hover:border-green-300 transition-all duration-150 shadow-sm hover:shadow"
       aria-label={`View ticket ${ticket.title}`}
     >
-      <div className="p-2">
+
+            <div className="p-2 ">
         {/* Top Row: Reporter */}
         <div className="flex items-center gap-2 mb-1 text-[9px] text-gray-500 ml-2">
           <div className="w-6 h-6 rounded-full bg-green-100 border border-green-200 flex items-center justify-center text-green-700 font-bold text-[9px]">
@@ -54,6 +55,7 @@ const TicketCard = ({ ticket }) => {
           </time>
         </span>
       </div>
+
     </Link>
   );
 };

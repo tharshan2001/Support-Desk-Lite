@@ -47,13 +47,10 @@ const Sidebar = () => {
         `}
       >
         {/* Brand */}
-        <div className="flex items-center gap-2.5 px-5 pt-[22px] pb-[18px] border-b border-[#f1f3f6]">
-          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#e6f5ea] flex items-center justify-center">
-            <Ticket size={24} color="#189435" />
-          </div>
+        <div className="flex items-center gap-2.5 px-5 pt-[22px] pb-[18px] border-b border-[#f1f3f6] uppercase">
           {!collapsed && (
             <span className="font-extrabold text-lg text-[#1a1d23]">
-              Support<span className="text-[#ffcc26]">Desk</span>
+              Support<span className="text-[#3b82f6]">Desk</span><span className="text-[#3b82f6]">Lite</span>
             </span>
           )}
         </div>
@@ -69,8 +66,8 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-[#fff4cc] text-[#1a1d23] font-semibold border-l-[3px] border-[#ffcc26]"
-                    : "text-[#5a6178] hover:bg-[#f1f3f6] hover:text-[#1a1d23]"
+                    ? "bg-slate-100 text-[#1e40af] font-semibold border-l-[3px] border-blue-500"
+                    : "text-[#5a6178] hover:bg-blue-50 hover:text-[#1e40af]"
                 }`
               }
             >
@@ -83,7 +80,7 @@ const Sidebar = () => {
         {/* User & Logout */}
         <div className="p-3.5 border-t border-[#f1f3f6]">
           <div className="flex items-center gap-2.5 mb-2.5">
-            <div className="w-9 h-9 rounded-full bg-[#189435] text-white flex items-center justify-center font-bold text-sm">
+            <div className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm">
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
             {!collapsed && (
@@ -101,7 +98,7 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2.5 w-full px-3.5 py-2.5 rounded-[10px] text-sm font-medium text-[#8c91a0] hover:bg-[#fee2e2] hover:text-[#e53e3e]"
+            className="flex items-center gap-2.5 w-full px-3.5 py-2.5 rounded-[10px] text-sm font-medium text-[#8c91a0] hover:bg-red-50 hover:text-red-600"
           >
             {!collapsed && <span>Logout</span>}
           </button>

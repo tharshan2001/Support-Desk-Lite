@@ -89,7 +89,7 @@ const CreateTicketPage = () => {
               minLength={5}
               maxLength={200}
               autoFocus
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -171,7 +171,7 @@ const CreateTicketPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full bg-blue-400/90 hover:bg-blue-400 text-white font-semibold py-2 rounded-md flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? (
               <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

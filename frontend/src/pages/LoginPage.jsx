@@ -34,7 +34,7 @@ const LoginPage = () => {
     if (["admin", "agent"].includes(user.role)) {
       navigate("/dashboard");
     } else if (user.role === "customer") {
-      navigate("/customer");
+      navigate("/tickets");
     }
   }, [user, navigate]);
 
@@ -43,11 +43,11 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="mx-auto mb-4 w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
-            <Ticket className="text-green-600" size={26} />
+          <div className="mx-auto mb-4 w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center">
+            <Ticket className="text-blue-600" size={26} />
           </div>
           <h2 className="text-2xl font-extrabold">
-            Support<span className="text-green-600">Desk</span>
+            Support<span className="text-blue-600">Desk</span>
           </h2>
           <p className="text-sm text-gray-500 mt-1">
             Sign in to your account
@@ -68,7 +68,7 @@ const LoginPage = () => {
               value={form.email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -84,7 +84,7 @@ const LoginPage = () => {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
@@ -99,7 +99,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700 transition disabled:opacity-70"
+            className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700 transition disabled:opacity-70"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -109,7 +109,7 @@ const LoginPage = () => {
           Don&apos;t have an account?{" "}
           <Link
             to="/register"
-            className="font-semibold text-green-600 hover:text-green-700"
+            className="font-semibold text-blue-600 hover:text-blue-700"
           >
             Create one
           </Link>

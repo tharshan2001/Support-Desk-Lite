@@ -10,12 +10,15 @@ import MyTickets from "./components/MyTickets";
 import TicketDetailPage from "./pages/TicketDetailPage";
 import AdminTicketListPage from "./pages/AdminTicketListPage";
 import AdminTicketDetailPage from "./pages/AdminTicketDetailPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
     <Routes>
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
       <Route path="/unauthorized" element={<div>Unauthorized Page</div>} />
 
       {/* Admin / Agent Dashboard */}

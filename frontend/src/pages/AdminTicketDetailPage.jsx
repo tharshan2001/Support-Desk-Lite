@@ -20,8 +20,7 @@ const AdminTicketDetailPage = () => {
   const [noteText, setNoteText] = useState("");
   const [updating, setUpdating] = useState(false);
 
-  const getNextStatus = (status) =>
-    ALLOWED_STATUS_TRANSITIONS[status]?.[0];
+  const getNextStatus = (status) => ALLOWED_STATUS_TRANSITIONS[status]?.[0];
 
   useEffect(() => {
     Promise.all([
@@ -35,17 +34,22 @@ const AdminTicketDetailPage = () => {
     });
   }, [ticketId]);
 
-  if (!ticket) return null;
+  if (!ticket) {
+    return (
+      <div className="h-screen flex items-center justify-center text-slate-400 animate-pulse font-medium">
+        Loading ticket details...
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-7xl mx-auto mt-4 h-[92vh] flex flex-col bg-white rounded-2xl shadow border overflow-hidden">
+    <div className="flex flex-col h-screen bg-white overflow-hidden">
       <TicketHeader
         ticket={ticket}
         updating={updating}
         onStatusUpdate={async () => {
           const next = getNextStatus(ticket.status);
           if (!next) return;
-
           setUpdating(true);
           await updateTicketStatus({ id: ticket._id, status: next });
           setTicket((p) => ({ ...p, status: next }));
@@ -54,33 +58,41 @@ const AdminTicketDetailPage = () => {
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <CommentsColumn
-          comments={comments}
-          value={commentText}
-          onChange={setCommentText}
-          onSend={async () => {
-            await addComment({ ticketId, body: commentText });
-            setComments((p) => [
-              ...p,
-              { body: commentText, createdAt: new Date(), user: { name: "Admin" } },
-            ]);
-            setCommentText("");
-          }}
-        />
+        {/* Public Thread - 60% or flexible */}
+        <div className="flex-1 overflow-hidden">
+          <CommentsColumn
+            comments={comments}
+            value={commentText}
+            onChange={setCommentText}
+            onSend={async () => {
+              if (!commentText.trim()) return;
+              await addComment({ ticketId, body: commentText });
+              setComments((p) => [
+                ...p,
+                { body: commentText, createdAt: new Date(), user: { name: "Admin" } },
+              ]);
+              setCommentText("");
+            }}
+          />
+        </div>
 
-        <NotesColumn
-          notes={notes}
-          value={noteText}
-          onChange={setNoteText}
-          onAdd={async () => {
-            await addInternalNote({ ticketId, body: noteText });
-            setNotes((p) => [
-              ...p,
-              { body: noteText, createdAt: new Date(), user: { name: "Admin" } },
-            ]);
-            setNoteText("");
-          }}
-        />
+        {/* Internal Notes - 40% or fixed width */}
+        <div className="w-96 overflow-hidden">
+          <NotesColumn
+            notes={notes}
+            value={noteText}
+            onChange={setNoteText}
+            onAdd={async () => {
+              if (!noteText.trim()) return;
+              await addInternalNote({ ticketId, body: noteText });
+              setNotes((p) => [
+                ...p,
+                { body: noteText, createdAt: new Date(), user: { name: "Admin" } },
+              ]);
+              setNoteText("");
+            }}
+          />
+        </div>
       </div>
     </div>
   );

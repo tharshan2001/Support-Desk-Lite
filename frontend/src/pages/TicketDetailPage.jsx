@@ -119,7 +119,7 @@ const TicketDetailPage = () => {
           </span>
         </div>
 
-        <p className="text-slate-600 leading-relaxed text-[13px] mb-6 max-w-3xl">
+        <p className="text-slate-600 leading-relaxed text-[14px] mb-6 max-w-3xl pr-5 pl-2">
           {ticket.description}
         </p>
       </div>

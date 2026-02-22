@@ -48,9 +48,12 @@ const Sidebar = () => {
       >
         {/* Brand */}
         <div className="flex items-center gap-2.5 px-5 pt-[22px] pb-[18px] border-b border-[#f1f3f6] uppercase">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#3b82f6] flex items-center justify-center">
+            <Ticket size={24} color="#ffffff" />
+          </div>
           {!collapsed && (
             <span className="font-extrabold text-lg text-[#1a1d23]">
-              Support<span className="text-[#3b82f6]">Desk</span><span className="text-[#3b82f6]">Lite</span>
+              Support<span className="text-[#3b82f6]">Desk</span>
             </span>
           )}
         </div>
@@ -66,8 +69,8 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-slate-100 text-[#1e40af] font-semibold border-l-[3px] border-blue-500"
-                    : "text-[#5a6178] hover:bg-blue-50 hover:text-[#1e40af]"
+                    ? "bg-slate-100 text-black font-semibold border-l-[3px] border-blue-500 tracking-wide"
+                    : "text-black hover:bg-blue-50 hover:text-black"
                 }`
               }
             >

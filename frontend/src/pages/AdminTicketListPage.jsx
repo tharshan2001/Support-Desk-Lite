@@ -162,12 +162,12 @@ const AdminTicketListPage = () => {
               <div className="relative flex-1 group">
                 <Search
                   size={18}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-500 transition-colors"
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors"
                 />
                 <input
                   type="text"
                   placeholder="Search by ID, title, description, or reporter..."
-                  className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all shadow-sm text-sm"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm text-sm"
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -232,7 +232,7 @@ const AdminTicketListPage = () => {
                 ].map((select, idx) => (
                   <select
                     key={idx}
-                    className="px-3.5 py-2.5 border border-gray-300 rounded-xl bg-white text-sm shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
+                    className="px-3.5 py-2.5 border border-gray-300 rounded-xl bg-white text-sm shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
                     value={select.value}
                     onChange={(e) => {
                       select.setter(e.target.value);
@@ -332,7 +332,7 @@ const AdminTicketListPage = () => {
             {(searchTerm || statusFilter !== "all" || priorityFilter !== "all") && (
               <button
                 onClick={clearFilters}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 shadow-md shadow-green-200 transition-all font-semibold active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-md shadow-blue-200 transition-all font-semibold active:scale-95"
               >
                 <X size={18} />
                 Clear All Filters
@@ -362,7 +362,7 @@ const AdminTicketListPage = () => {
               aria-label="Pagination"
             >
               <button
-                className="p-2 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-all focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm"
+                className="p-2 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-all focus:ring-1 focus:ring-blue-500 focus:outline-none shadow-sm"
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
                 aria-label="Previous page"
@@ -385,9 +385,9 @@ const AdminTicketListPage = () => {
                       key={pageNum}
                       onClick={() => setPage(pageNum)}
                       aria-current={isActive ? "page" : undefined}
-                      className={`min-w-[40px] h-10 rounded-xl text-sm font-bold transition-all focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm ${
+                      className={`min-w-[40px] h-10 rounded-xl text-sm font-bold transition-all focus:ring-1 focus:ring-blue-500 focus:outline-none shadow-sm ${
                         isActive
-                          ? "bg-green-600 text-white border-transparent hover:bg-green-700"
+                          ? "bg-blue-600 text-white border-transparent hover:bg-blue-700"
                           : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
                       }`}
                     >

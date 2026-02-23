@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Plus, Menu, X, Ticket, Shield } from "lucide-react";
 import { useAuthStore } from "../context/authStore";
+import toast from "react-hot-toast";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -11,8 +12,15 @@ const AdminSidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/login");
+    const toastId = toast.loading("Logging out...");
+
+    try {
+      await logout();
+      toast.success("Logged out successfully", { id: toastId });
+      navigate("/login");
+    } catch (err) {
+      toast.error("Failed to log out", { id: toastId });
+    }
   };
 
   const navItems = [

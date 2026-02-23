@@ -89,7 +89,7 @@ const CreateTicketPage = () => {
               minLength={5}
               maxLength={200}
               autoFocus
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
@@ -111,7 +111,7 @@ const CreateTicketPage = () => {
               required
               minLength={10}
               maxLength={5000}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
@@ -128,7 +128,7 @@ const CreateTicketPage = () => {
               name="priority"
               value={form.priority}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -139,17 +139,17 @@ const CreateTicketPage = () => {
           {/* Tags */}
           <div>
             <label className="block text-sm font-medium mb-1">Tags</label>
-            <div className="flex flex-wrap gap-2 border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-green-500">
+            <div className="flex flex-wrap gap-2 border border-gray-300 rounded-md px-3 py-2 focus-within:ring-1 focus-within:ring-blue-500">
               {tags.map((t) => (
                 <span
                   key={t}
-                  className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm"
+                  className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
                 >
                   {t}
                   <button
                     type="button"
                     onClick={() => removeTag(t)}
-                    className="flex items-center justify-center hover:text-green-900"
+                    className="flex items-center justify-center hover:text-blue-900"
                   >
                     <X size={12} />
                   </button>

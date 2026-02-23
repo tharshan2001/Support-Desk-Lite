@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  PlayCircle,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import { PlayCircle, CheckCircle, XCircle } from "lucide-react";
 
 import TicketHeader from "../components/admin/TicketHeader";
 import CommentsColumn from "../components/admin/CommentsColumn";
@@ -14,6 +10,8 @@ import { getTicketById, getComments, addComment } from "../service/tickets";
 import { getInternalNotes, addInternalNote } from "../service/notes";
 import { updateTicketStatus } from "../service/status";
 import { ALLOWED_STATUS_TRANSITIONS } from "../utils/statusTransitions";
+
+import toast from "react-hot-toast";
 
 const STATUS_UI = {
   in_progress: {
@@ -41,23 +39,40 @@ const AdminTicketDetailPage = () => {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      getTicketById(ticketId),
-      getComments(ticketId),
-      getInternalNotes(ticketId),
-    ]).then(([t, c, n]) => {
-      setTicket(t);
-      setComments(c ?? []);
-      setNotes(n?.data ?? []);
-    });
+    const loadData = async () => {
+      try {
+        const [t, c, n] = await Promise.all([
+          getTicketById(ticketId),
+          getComments(ticketId),
+          getInternalNotes(ticketId),
+        ]);
+
+        setTicket(t);
+        setComments(c ?? []);
+        setNotes(n?.data ?? []);
+      } catch (err) {
+        toast.error("Failed to load ticket details");
+      }
+    };
+
+    loadData();
   }, [ticketId]);
 
   const handleStatusChange = async (nextStatus) => {
     if (updating) return;
+
     setUpdating(true);
-    await updateTicketStatus({ id: ticket._id, status: nextStatus });
-    setTicket((prev) => ({ ...prev, status: nextStatus }));
-    setUpdating(false);
+    const toastId = toast.loading("Updating ticket status...");
+
+    try {
+      await updateTicketStatus({ id: ticket._id, status: nextStatus });
+      setTicket((prev) => ({ ...prev, status: nextStatus }));
+      toast.success("Ticket status updated", { id: toastId });
+    } catch (err) {
+      toast.error("Failed to update status", { id: toastId });
+    } finally {
+      setUpdating(false);
+    }
   };
 
   if (!ticket) {
@@ -107,16 +122,22 @@ const AdminTicketDetailPage = () => {
             onChange={setCommentText}
             onSend={async () => {
               if (!commentText.trim()) return;
-              await addComment({ ticketId, body: commentText });
-              setComments((prev) => [
-                ...prev,
-                {
-                  body: commentText,
-                  createdAt: new Date(),
-                  user: { name: "Admin" },
-                },
-              ]);
-              setCommentText("");
+
+              try {
+                await addComment({ ticketId, body: commentText });
+                setComments((prev) => [
+                  ...prev,
+                  {
+                    body: commentText,
+                    createdAt: new Date(),
+                    user: { name: "Admin" },
+                  },
+                ]);
+                setCommentText("");
+                toast.success("Comment added");
+              } catch (err) {
+                toast.error("Failed to add comment");
+              }
             }}
           />
         </div>
@@ -129,16 +150,22 @@ const AdminTicketDetailPage = () => {
             onChange={setNoteText}
             onAdd={async () => {
               if (!noteText.trim()) return;
-              await addInternalNote({ ticketId, body: noteText });
-              setNotes((prev) => [
-                ...prev,
-                {
-                  body: noteText,
-                  createdAt: new Date(),
-                  user: { name: "Admin" },
-                },
-              ]);
-              setNoteText("");
+
+              try {
+                await addInternalNote({ ticketId, body: noteText });
+                setNotes((prev) => [
+                  ...prev,
+                  {
+                    body: noteText,
+                    createdAt: new Date(),
+                    user: { name: "Admin" },
+                  },
+                ]);
+                setNoteText("");
+                toast.success("Internal note added");
+              } catch (err) {
+                toast.error("Failed to add note");
+              }
             }}
           />
         </div>

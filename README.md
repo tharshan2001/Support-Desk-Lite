@@ -1,208 +1,178 @@
 # Support Desk Lite
 
-**Support Desk Lite** is a **full-stack support ticket management system** built for Yarl Ventures’ MERN Stack Intern assessment. It allows users to create and manage support tickets with role-based access and secure workflows.  
+**Support Desk Lite** is a full-stack support ticket management system built as part of the **Yarl Ventures – MERN Stack Intern Technical Assessment**.  
+It demonstrates secure authentication, strict role-based access control, ticket lifecycle management, and comprehensive testing.
 
-- **Customer**: Can create tickets, view own tickets, add public comments. Cannot see internal notes.  
-- **Agent**: Can view all tickets, assign tickets, change ticket status, add public and internal comments.  
-- **Admin**: All agent permissions plus user and role management.
-
-This project demonstrates:
-- Role-based access control  
-- Secure authentication with JWT  
-- Input validation with Joi  
-- Ticket lifecycle with strict status transitions  
-- Comment system with public/internal notes  
-- Pagination, filtering, and search on tickets  
-- Integration and frontend testing
-
----
-
-## Table of Contents
-
-1. [Tech Stack](#tech-stack)  
-2. [Setup Instructions](#setup-instructions)  
-3. [Environment Variables](#environment-variables)  
-4. [Seed Data](#seed-data)  
-5. [API Routes](#api-routes)  
-6. [Testing](#testing)  
-7. [Postman Collection](#postman-collection)  
-8. [Screenshots / Demo](#screenshots-demo)  
-9. [Contributing / Notes](#contributing-notes)
+## Roles
+- **Customer**: Create tickets, view own tickets only, add public comments. Cannot see or create internal notes.
+- **Agent**: View all tickets, assign tickets, change ticket status, add public comments and internal notes.
+- **Admin**: All Agent permissions plus manage users and roles.
 
 ---
 
 ## Tech Stack
 
-**Backend**:  
-- Node.js, Express.js  
-- MongoDB, Mongoose  
-- JWT for authentication  
-- Joi for input validation  
-- Jest + Supertest for integration tests
+### Backend
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+- JWT Authentication
+- Joi (request validation)
+- Jest + Supertest (integration tests)
 
-**Frontend**:  
-- React (TypeScript optional)  
-- React Testing Library  
-- Axios for API calls  
+### Frontend
+- React
+- React Testing Library
+- Axios
 
-**Other Tools**:  
-- dotenv for environment variables  
-- nodemon for development  
-- Postman for API testing
+### Tools
+- dotenv
+- nodemon
+- Postman
 
 ---
 
 ## Setup Instructions
 
-1. Clone the repository:  
+### 1. Clone Repository
 ```bash
-git clone <your-repo-url>
-cd support-desk-lite
+git clone https://github.com/tharshan2001/Support-Desk-Lite.git
+cd Support-Desk-Lite
 
+## 2. Install Dependencies
 
-Install dependencies:
-
+```bash
 npm install
+```
 
+If frontend is in a separate folder:
 
-Create a .env file based on .env.example with your local credentials.
+```bash
+cd client
+npm install
+```
 
-Seed the database with initial users and tickets:
+## 3. Environment Variables
 
-npm run seed
+Create a `.env` file in the root directory using `.env.example` as reference.
 
-
-Start the backend server:
-
-npm run dev
-
-
-Start the frontend server (from /client folder if separate):
-
-npm start
-
-
-Access the app at http://localhost:3000 (frontend) and backend API at http://localhost:5000/api
-
-Environment Variables
-
-Your .env file should include:
-
+```
 PORT=5000
-MONGO_URI=<your-local-mongodb-uri>
-JWT_SECRET=<your-secret-key>
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+```
 
+### Seed Data
 
-See .env.example for placeholders.
+Run the seed script:
 
-Seed Data
+```bash
+npm run seed
+```
 
-1 Admin user
+This will create:
 
-1 Agent user
+- 1 Admin user
+- 1 Agent user
+- 1 Customer user
+- At least 3 tickets with mixed statuses and comments
 
-1 Customer user
+Seeded credentials are documented in the seed file and `.env.example`.
 
-3 sample tickets with mixed statuses and comments (public and internal)
+## Running the Application
 
-Use the seeded emails and password (as per .env) to log in.
+### Backend
 
-API Routes
+```bash
+npm run dev
+```
 
-Authentication:
+Backend API:
 
-POST /api/auth/register – Register a new user
+http://localhost:5000/api
 
-POST /api/auth/login – Login and receive JWT
+### Frontend
 
-Tickets:
+```bash
+cd client
+npm start
+```
 
-POST /api/tickets – Create ticket (Customer/Agent/Admin)
+Frontend App:
 
-GET /api/tickets – List tickets with filters and pagination
+http://localhost:3000
 
-GET /api/tickets/:id – Get ticket detail
+## API Routes
 
-PATCH /api/tickets/:id/assign – Assign ticket (Agent/Admin)
+### Authentication
 
-PATCH /api/tickets/:id/status – Change ticket status (Agent/Admin)
+- POST `/api/auth/register` – Register user
+- POST `/api/auth/login` – Login and receive JWT
 
-Comments:
+### Tickets
 
-POST /api/comments – Add public comment (all roles)
+- POST `/api/tickets` – Create ticket
+- GET `/api/tickets` – List tickets (filters + pagination)
+- GET `/api/tickets/:id` – Get ticket by ID
+- PATCH `/api/tickets/:id/assign` – Assign ticket (Agent/Admin)
+- PATCH `/api/tickets/:id/status` – Change ticket status (Agent/Admin)
 
-POST /api/comments/internal – Add internal note (Agent/Admin only)
+### Comments
 
-GET /api/tickets/:id/comments – Get ticket comments (internal notes hidden from Customers)
+- POST `/api/comments` – Add public comment
+- POST `/api/comments/internal` – Add internal note (Agent/Admin only)
+- GET `/api/tickets/:id/comments` – Get ticket comments (Internal notes are automatically hidden for Customers)
 
-All protected routes require Authorization: Bearer <token>
+All protected routes require:
 
-Testing
+```
+Authorization: Bearer <access_token>
+```
 
-Backend Tests (Jest + Supertest)
+## Testing
 
-Run all tests:
+### Backend Tests
 
+```bash
 npm test
+```
 
+Includes:
 
-Minimum required test coverage:
+- Login returns JWT
+- Customer cannot access another customer’s ticket
+- Invalid ticket status transitions return 400
+- Valid status transitions succeed
+- Internal notes never appear for Customer
+- Pagination response shape and limits
 
-Login returns JWT
+### Frontend Tests
 
-Customer cannot access other customers’ tickets
+```bash
+npm test
+```
 
-Invalid status transitions return 400
+Includes:
 
-Agent can change ticket status correctly
+- Login form validation errors
+- Internal note UI hidden for Customer role
 
-Internal notes never appear for customers
+### Postman Collection
 
-Pagination works and returns correct response shape
+Postman Workspace: [Postman Workspace](https://www.postman.com/tharshan-5399631/workspace/support-desk-lite)
 
-Frontend Tests (React Testing Library)
+Includes:
 
-Login form validation
+- Auth flows
+- Ticket CRUD
+- Status transitions
+- Public & internal comments
+- Environment variables with auto token handling
 
-Role-based UI elements (internal notes hidden for Customer)
+## Notes
 
-Postman Collection
-
-Collection JSON: CandidateID_support_desk_lite.postman_collection.json
-
-Environment JSON: CandidateID_support_desk_lite.postman_environment.json
-
-Use these to test authentication, ticket creation, status changes, and comments end-to-end
-
-Screenshots / Demo
-
-Include:
-
-Login page
-
-Ticket list page with filters
-
-Ticket detail with comments
-
-Create ticket modal/page
-
-Optional: add screen recording (3–6 min) of:
-
-Login → create ticket → change status → add comment
-
-Contributing / Notes
-
-Follow role-based access rules carefully
-
-Never hardcode JWT secrets or DB URIs
-
-Commit incrementally with meaningful messages for auto-review
-
-Document any deviations from the spec in this README
-
-
----
-
-If you want, I can **turn this into a direct downloadable `.md` file link**, so you can just click and save it instead of copying manually.  
-
-Do you want me to do that next?
+- All write endpoints are validated using Joi.
+- Ticket status transitions strictly follow the allowed rules.
+- Customers can never access other customers’ tickets or internal notes.
+- No secrets are hardcoded; all sensitive values are stored in environment variables.
+- Git history reflects incremental development with meaningful commits.

@@ -10,8 +10,7 @@ const NotesColumn = ({ notes, value, onChange, onAdd }) => {
   return (
     <div className="flex flex-col h-full bg-amber-50/30">
       <div className="p-4 border-b border-amber-100/50 flex items-center justify-between shrink-0 bg-white/50 backdrop-blur-sm">
-        <h3 className="text-[11px] font-black text-amber-700 uppercase tracking-widest">Internal Notes</h3>
-        <span className="text-[9px] px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-bold uppercase">Staff Only</span>
+        <p className="text-[18px] font-black text-amber-700 uppercase tracking-widest">Internal Notes</p>
       </div>
 
       <div ref={ref} className="flex-1 overflow-y-auto p-4 space-y-4">

@@ -87,7 +87,7 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3bf63e18; /* Tailwind bg-blue-500 */
+  background-color: #3b67f618; /* Tailwind bg-blue-500 */
   border-radius: 9999px; /* rounded-full */
     border: 1px solid rgba(0, 0, 0, 0.085);
 

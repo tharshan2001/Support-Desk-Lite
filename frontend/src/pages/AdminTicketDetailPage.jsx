@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  PlayCircle,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 
 import TicketHeader from "../components/admin/TicketHeader";
 import CommentsColumn from "../components/admin/CommentsColumn";
@@ -10,6 +15,21 @@ import { getInternalNotes, addInternalNote } from "../service/notes";
 import { updateTicketStatus } from "../service/status";
 import { ALLOWED_STATUS_TRANSITIONS } from "../utils/statusTransitions";
 
+const STATUS_UI = {
+  in_progress: {
+    label: "In Progress",
+    icon: PlayCircle,
+  },
+  resolved: {
+    label: "Resolved",
+    icon: CheckCircle,
+  },
+  closed: {
+    label: "Close",
+    icon: XCircle,
+  },
+};
+
 const AdminTicketDetailPage = () => {
   const { id: ticketId } = useParams();
 
@@ -19,8 +39,6 @@ const AdminTicketDetailPage = () => {
   const [commentText, setCommentText] = useState("");
   const [noteText, setNoteText] = useState("");
   const [updating, setUpdating] = useState(false);
-
-  const getNextStatus = (status) => ALLOWED_STATUS_TRANSITIONS[status]?.[0];
 
   useEffect(() => {
     Promise.all([
@@ -34,31 +52,54 @@ const AdminTicketDetailPage = () => {
     });
   }, [ticketId]);
 
+  const handleStatusChange = async (nextStatus) => {
+    if (updating) return;
+    setUpdating(true);
+    await updateTicketStatus({ id: ticket._id, status: nextStatus });
+    setTicket((prev) => ({ ...prev, status: nextStatus }));
+    setUpdating(false);
+  };
+
   if (!ticket) {
     return (
-      <div className="h-screen flex items-center justify-center text-slate-400 animate-pulse font-medium">
+      <div className="h-[600px] flex items-center justify-center text-slate-400 animate-pulse font-medium">
         Loading ticket details...
       </div>
     );
   }
 
-  return (
-    <div className="flex flex-col h-screen bg-white overflow-hidden">
-      <TicketHeader
-        ticket={ticket}
-        updating={updating}
-        onStatusUpdate={async () => {
-          const next = getNextStatus(ticket.status);
-          if (!next) return;
-          setUpdating(true);
-          await updateTicketStatus({ id: ticket._id, status: next });
-          setTicket((p) => ({ ...p, status: next }));
-          setUpdating(false);
-        }}
-      />
+  const nextStatuses = ALLOWED_STATUS_TRANSITIONS[ticket.status] || [];
 
+  return (
+    <div className="flex flex-col h-[800px] bg-white overflow-hidden">
+      {/* HEADER */}
+      <TicketHeader ticket={ticket} />
+
+      {/* STATUS ACTION BUTTONS */}
+      {nextStatuses.length > 0 && (
+        <div className="flex gap-6 px-6 py-3 border-b">
+          {nextStatuses.map((next) => {
+            const Icon = STATUS_UI[next]?.icon;
+            const label = STATUS_UI[next]?.label ?? next;
+
+            return (
+              <button
+                key={next}
+                disabled={updating}
+                onClick={() => handleStatusChange(next)}
+                className="flex flex-col items-center text-slate-600 hover:text-black disabled:opacity-40"
+              >
+                <Icon size={26} />
+                <span className="text-xs mt-1">{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* BODY */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Public Thread - 60% or flexible */}
+        {/* Public Comments */}
         <div className="flex-1 overflow-hidden">
           <CommentsColumn
             comments={comments}
@@ -67,16 +108,20 @@ const AdminTicketDetailPage = () => {
             onSend={async () => {
               if (!commentText.trim()) return;
               await addComment({ ticketId, body: commentText });
-              setComments((p) => [
-                ...p,
-                { body: commentText, createdAt: new Date(), user: { name: "Admin" } },
+              setComments((prev) => [
+                ...prev,
+                {
+                  body: commentText,
+                  createdAt: new Date(),
+                  user: { name: "Admin" },
+                },
               ]);
               setCommentText("");
             }}
           />
         </div>
 
-        {/* Internal Notes - 40% or fixed width */}
+        {/* Internal Notes */}
         <div className="w-96 overflow-hidden">
           <NotesColumn
             notes={notes}
@@ -85,9 +130,13 @@ const AdminTicketDetailPage = () => {
             onAdd={async () => {
               if (!noteText.trim()) return;
               await addInternalNote({ ticketId, body: noteText });
-              setNotes((p) => [
-                ...p,
-                { body: noteText, createdAt: new Date(), user: { name: "Admin" } },
+              setNotes((prev) => [
+                ...prev,
+                {
+                  body: noteText,
+                  createdAt: new Date(),
+                  user: { name: "Admin" },
+                },
               ]);
               setNoteText("");
             }}

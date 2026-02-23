@@ -85,9 +85,9 @@ function App() {
         path="/tickets/detailed/:id"
         element={
           <ProtectedRoute allowedRoles={["agent", "admin"]}>
-            <CustomerLayout>
+            <AdminLayout>
               <AdminTicketDetailPage />
-            </CustomerLayout>
+            </AdminLayout>
           </ProtectedRoute>
         }
       />

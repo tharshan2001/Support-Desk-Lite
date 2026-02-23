@@ -10,8 +10,7 @@ const CommentsColumn = ({ comments, value, onChange, onSend }) => {
   return (
     <div className="flex flex-col h-full bg-blue-50/30 border-r border-slate-100">
       <div className="p-4 border-b border-blue-100/50 flex items-center justify-between shrink-0 bg-white/50 backdrop-blur-sm">
-        <h3 className="text-[11px] font-black text-blue-700 uppercase tracking-widest">Public Thread</h3>
-        <span className="text-[9px] px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-bold uppercase">Customer Visible</span>
+        <p className="text-[18px] font-black text-blue-700 uppercase tracking-widest">Public Thread</p>
       </div>
 
       <div ref={ref} className="flex-1 overflow-y-auto p-4 space-y-4">

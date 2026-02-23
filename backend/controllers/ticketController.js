@@ -38,7 +38,7 @@ export const createTicket = async (req, res) => {
 //update status
 export const updateTicketStatus = async (req, res) => {
   try {
-    //validate input
+    // validate input
     const { error, value } = ticketStatusUpdateSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ errors: error.details });
@@ -48,9 +48,8 @@ export const updateTicketStatus = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { status } = value;
+    const { status, assignTo } = value;
     const ticketId = req.body.id;
-    const userId = req.user.id;
 
     const ticket = await Ticket.findById(ticketId);
     if (!ticket) {
@@ -63,11 +62,22 @@ export const updateTicketStatus = async (req, res) => {
         message: `Invalid status transition from '${currentStatus}' to '${status}'`,
       });
     }
+
+    // optional: validate assigned user exists
+    if (assignTo) {
+      const userExists = await User.findById(assignTo);
+      if (!userExists) {
+        return res.status(400).json({ message: "Assigned user not found" });
+      }
+      ticket.assignTo = assignTo;
+    }
+
     ticket.status = status;
     await ticket.save();
 
     res.status(200).json(ticket);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
